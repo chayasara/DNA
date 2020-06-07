@@ -6,6 +6,7 @@
 #include <ostream>
 #include <iostream>
 #include <stdexcept>
+#include <fstream>
 
 class DnaSequence
 {
@@ -19,9 +20,11 @@ private:
 		DnaChar(char c);
 		DnaChar& operator=(DnaChar rv);
 		operator char()const;
-		                                                                                                                                                                           
+   		char getPair()const;
+                                                                                                                                                                      
 	private:
 		char m_necleotide;
+		
 	};
 	
 public:
@@ -37,7 +40,11 @@ public:
 	
 	char const operator[](size_t index)const;
 	DnaChar& operator[](size_t index);
+	
 	size_t length()const;
+//phase2
+	DnaSequence slice(size_t, size_t)const;
+	DnaSequence getPair()const;
 	
 private:
 	DnaChar *m_sequence;
@@ -50,6 +57,9 @@ private:
 	
 };
 
+std::string readDnaFromFile(const char* file_name);
+
+void writeDnaToFile(DnaSequence&, const char* file_name);
 
 inline DnaSequence::DnaSequence(const char *sequence)
 {
@@ -60,6 +70,8 @@ inline DnaSequence::DnaSequence(const std::string &sequence)
 {
 	initField(sequence.c_str());
 }
+
+
 
 inline DnaSequence::DnaSequence(const DnaSequence &other)
 {
@@ -118,7 +130,25 @@ inline size_t DnaSequence::length()const
 {
 	return m_length;
 }
+//phase2
+inline DnaSequence DnaSequence::slice(size_t start, size_t end)const
+{
+	if(end >= m_length || start < 0 || start > end)
+		throw std::invalid_argument("index out of range");
+	return DnaSequence(std::string((char*)m_sequence).substr(start, end));
+}
 
-
+inline DnaSequence DnaSequence::getPair()const
+{
+	char* seq = new char [m_length];
+	 
+	for(size_t i=0; i < m_length; i++)
+	{
+		seq[i] = m_sequence[m_length-i-1].getPair();
+	}
+	DnaSequence d(seq);
+	delete [] seq;
+	return d;
+}
 
 #endif
