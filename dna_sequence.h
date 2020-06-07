@@ -4,25 +4,13 @@
 #include <string>
 #include <cstring>
 #include <ostream>
-#include <iostream>
+#include "dna_char.h"
+
 
 class DnaSequence
 {
+	friend std::ostream& operator<<(std::ostream&, DnaSequence&);
 
-friend std::ostream& operator<<(std::ostream&, DnaSequence&);
-
-private:
-	class DnaChar{
-	public:
-		DnaChar(){}
-		DnaChar(char c);
-		DnaChar& operator=(DnaChar rv);
-		char get_necleotide()const;
-		
-		                                                                                                                                                                            
-	private:
-		char m_necleotide;
-	};
 public:
 	DnaSequence(const char *sequence);
 	DnaSequence(const std::string &sequence);
@@ -30,33 +18,23 @@ public:
 	~DnaSequence();
 
 	DnaSequence& operator=(const DnaSequence &other);
-	
+
 	bool operator==(const DnaSequence &other)const;
 	bool operator!=(const DnaSequence &other)const;
-	
-	DnaChar const operator[](size_t index)const;
+
+	const char operator[](size_t index)const;
 	DnaChar operator[](size_t index);
 	size_t length()const;
-	
-	//char* get_sequence()const;
-	
+
 private:
-	
-	DnaChar *m_sequence;
+	char *m_sequence;
 	size_t m_sequence_length;
-	
-	
-	
-	void set(size_t index, char value);
-	
-	void initField(const DnaChar* sequence, bool isOverriding = false);
+
 	void initField(const char* sequence, bool isOverriding = false);
 	void checkIfNull(const char*)const;
-	
-	bool strcmp(DnaChar *, DnaChar *) const;
-	
 };
 
+bool is_seq_valid(const char* seq);
 
 inline DnaSequence::DnaSequence(const char *sequence)
 {
@@ -75,44 +53,42 @@ inline DnaSequence::DnaSequence(const DnaSequence &other)
 
 inline DnaSequence::~DnaSequence()
 {	
-	std::cout<<"in dtor, sequence: "<< m_sequence << std::endl;
 	delete [] m_sequence;
 }
 
 inline DnaSequence& DnaSequence::operator=(const DnaSequence &other)
 {
 	if(this != &other)
-	{
 		initField(other.m_sequence, true);
-	}
-	
+
 	return *this;
 }
 
 inline bool DnaSequence::operator==(const DnaSequence &other)const
 {
-	return (strcmp(m_sequence, other.m_sequence));
+	return (strcmp(m_sequence, other.m_sequence) == 0);
 }
 
 inline bool DnaSequence::operator!=(const DnaSequence &other)const
 {
-	return (!strcmp(m_sequence, other.m_sequence));
+	return (strcmp(m_sequence, other.m_sequence) != 0);
 }
 
 inline std::ostream& operator<<(std::ostream& os, DnaSequence& dna)
 {
-	for(size_t i=0; i<dna.m_sequence_length; ++i, os<<dna.m_sequence[i].get_necleotide());
-	return os;
+	return os << dna.m_sequence;
 }
 
-
-inline const DnaSequence::DnaChar DnaSequence::operator[](size_t index)const
+inline const char DnaSequence::operator[](size_t index)const
 {
 	return m_sequence[index];
 }
 
-inline DnaSequence::DnaChar DnaSequence::operator[](size_t index)
+inline DnaChar DnaSequence::operator[](size_t index)
 {
+	if(index >= m_sequence_length)
+		throw std::invalid_argument("index out of range");
+		
 	return m_sequence[index];
 }
 
@@ -120,7 +96,4 @@ inline size_t DnaSequence::length()const
 {
 	return m_sequence_length;
 }
-
-
-
 #endif
