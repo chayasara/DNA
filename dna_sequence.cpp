@@ -6,6 +6,7 @@
 
 void DnaSequence::initField(const char *sequence, bool isOverriding)
 {	
+	//std::cout << "in init: " << sequence<<std::endl;
 	checkIfNull(sequence);
 	size_t len = strlen(sequence);
 	DnaChar *tmp = new DnaChar [sizeof(DnaChar)*(len)];
@@ -27,11 +28,16 @@ void DnaSequence::initField(const char *sequence, bool isOverriding)
 	m_length = len;
 }
 
-
 void DnaSequence::checkIfNull(const void *sequence)const
 {
 	if(sequence == NULL)
 		throw (std::invalid_argument("invalid NULL pointer sequence"));
+}
+
+void DnaSequence::checkIndexValidity(size_t index)const
+{
+	if(index >= m_length || index < 0)
+		throw std::invalid_argument("index out of range");
 }
 
 bool DnaSequence::strcmp(const DnaChar *lv, const DnaChar *rv) const
@@ -46,7 +52,8 @@ DnaSequence::DnaChar::DnaChar(char c)
 :m_necleotide(c)
 {
 	if(m_necleotide != 'A' && m_necleotide != 'T' && m_necleotide != 'C' && m_necleotide != 'G')
-		throw (std::invalid_argument("Necleotide must be A, T, C or G"));
+		{std::cout<<m_necleotide<<std::endl;
+		throw (std::invalid_argument("Necleotide must be A, T, C or G"));}
 }
 
 DnaSequence::DnaChar& DnaSequence::DnaChar::operator=(DnaChar rv)
@@ -76,7 +83,6 @@ void writeDnaToFile(DnaSequence &dna, const char* file_name)
 	file << dna;
 	file.close();
 }
-
 
 char DnaSequence::DnaChar::getPair()const
 {
