@@ -49,22 +49,22 @@ bool DnaSequence::strcmp(const DnaChar *lv, const DnaChar *rv) const
 }
 
 DnaSequence::DnaChar::DnaChar(char c)
-:m_necleotide(c)
+:m_nucleotide(c)
 {
-	if(m_necleotide != 'A' && m_necleotide != 'T' && m_necleotide != 'C' && m_necleotide != 'G')
-		{std::cout<<m_necleotide<<std::endl;
-		throw (std::invalid_argument("Necleotide must be A, T, C or G"));}
+	if(m_nucleotide != 'A' && m_nucleotide != 'T' && m_nucleotide != 'C' && m_nucleotide != 'G')
+		{std::cout<<m_nucleotide<<std::endl;
+		throw (std::invalid_argument("nucleotide must be A, T, C or G"));}
 }
 
 DnaSequence::DnaChar& DnaSequence::DnaChar::operator=(DnaChar rv)
 {
-	m_necleotide = char(rv);
+	m_nucleotide = char(rv);
 	return *this;
 }
 
 DnaSequence::DnaChar::operator char()const
 {
-	return m_necleotide;
+	return m_nucleotide;
 }
 
 std::string readDnaFromFile(const char* file_name)
@@ -86,7 +86,7 @@ void writeDnaToFile(DnaSequence &dna, const char* file_name)
 
 char DnaSequence::DnaChar::getPair()const
 {
-	switch (m_necleotide)
+	switch (m_nucleotide)
 	{
 		case'A':return 'T';
 		case'T':return 'A';

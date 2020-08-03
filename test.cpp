@@ -2,32 +2,6 @@
 #include <gtest/gtest.h>
 #include "dna_sequence.h"
 
-void my_tests()
-{
-	char* s = new char [10];
-	strcpy(s, "TTTTTCGGGGCTTT");
-	
-	DnaSequence d1("GTTG");
-	std::cout << "line 11:"<<d1 << std::endl;
-	d1 = "C";
-	std::cout <<"line 13:"<< d1 << std::endl;
-	DnaSequence d2(d1);
-	std::cout << d2 << std::endl;
-	DnaSequence d3 = d2;
-	std::cout << d3 << std::endl;
-	d3="ATCG";
-	std::cout << "should be ATCG: " << d3 << std::endl;
-	d3 = "G";
-	std::cout << "should be T: " << d3[1] << std::endl;
-	std::cout << "should be 4: " << d3.length() << std::endl;
-	std::cout << "should be true: " << bool(d3 != d2) << std::endl;
-	std::cout << "b4: " << d1 << std::endl;
-	d1[1] = 'A';
-	std::cout << "after: " << d1 << std::endl;
-	//d3[1] = 'k';
-	delete [] s;
-	
-}
 
 int main(int argc, char* argv[])
 {	
@@ -37,7 +11,25 @@ int main(int argc, char* argv[])
 }
 
 /////////////////////////////////////
-// TESTS under this line
+
+TEST(Phase2BasicTests, basics)
+{
+	char* s = new char [10];
+	strcpy(s, "TTTTTCGGGGCTTT");
+	
+	DnaSequence d1("GTTG");
+	d1 = "C";
+	DnaSequence d2(d1);
+	DnaSequence d3 = d2;
+	d3="ATCG";
+	d3 = "G";
+	ASSERT_EQ(d3[1], 'T');
+	ASSERT_EQ(d3.length(), 4);
+	ASSERT_TRUE(d3 != d2);
+	d1[1] = 'A';
+	//d3[1] = 'k';
+	delete [] s;
+}
 
 TEST(Phase2BasicTests, readDnaFromFile)
 {

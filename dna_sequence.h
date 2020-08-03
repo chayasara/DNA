@@ -24,7 +24,7 @@ private:
    		char getPair()const;
                                                                                                                                                                       
 	private:
-		char m_necleotide;
+		char m_nucleotide;
 		
 	};
 	
