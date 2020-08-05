@@ -6,7 +6,6 @@
 
 void DnaSequence::initField(const char *sequence, bool isOverriding)
 {	
-	//std::cout << "in init: " << sequence<<std::endl;
 	checkIfNull(sequence);
 	size_t len = strlen(sequence);
 	DnaChar *tmp = new DnaChar [sizeof(DnaChar)*(len)];

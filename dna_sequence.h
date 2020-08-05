@@ -70,13 +70,11 @@ void writeDnaToFile(DnaSequence&, const char* file_name);
 
 inline DnaSequence::DnaSequence(const char *sequence)
 {
-	//std::cout<<"in char* ctor with string:"<<sequence;
 	initField(sequence);
 }
 
 inline DnaSequence::DnaSequence(const std::string &sequence)
 {
-	//std::cout<<"in string ctor with string:"<<sequence;
 	initField(sequence.c_str());
 }
 
@@ -94,7 +92,6 @@ inline DnaSequence& DnaSequence::operator=(const DnaSequence &other)
 {
 	if(this != &other)
 	{	
-		//std::cout<<"char* in =: "<< (char*)(other.m_sequence)<<std::endl;
 		initField((char*)other.m_sequence, true);
 	}
 	
